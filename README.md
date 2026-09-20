@@ -127,9 +127,22 @@ interesting is in turning one into the other:
 - **Negative deltas are clamped to zero.** Counters reset when an interface goes
   down and comes back. Without the clamp, reconnecting wifi prints a nonsense
   multi-gigabyte spike.
-- **Fixed-width labels.** Monospace, right-aligned, `min-width: 92px`. Without
-  it the panel reflows every second as the digit count changes, and everything
-  to the left of it jitters.
+- **Both ends of the label are pinned; only the middle moves.** Every reading is
+  padded to the same character count, which in a monospace font is the same pixel
+  width. The prefix sits at a fixed column on the left, the unit at a fixed
+  column on the right, and the number floats in the fixed field between them:
+
+  ```
+  U: 0.00  B/s
+  U:  388 kB/s
+  U: 4.96 MB/s
+  U: 1397 GB/s
+  ```
+
+  So nothing in the panel shifts as the rate crosses a digit or unit boundary.
+  An earlier version used `min-width` with `text-align: right`, which pins the
+  right edge and lets text grow leftward — that made the prefixes slide sideways
+  on every change, which is the bug this replaced.
 - **The timer is removed in `destroy()`**, before `super.destroy()`. A
   disable/enable cycle otherwise leaks a timeout that keeps firing against a
   destroyed widget.

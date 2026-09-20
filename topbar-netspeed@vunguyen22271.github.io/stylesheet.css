@@ -2,12 +2,21 @@
     padding: 0 4px;
 }
 
+/* monospace is load-bearing: formatRate() pads every reading to the same
+   character count, which is only the same pixel width in a fixed-pitch font.
+   Do not set min-width or text-align here - the old right-aligned min-width
+   is exactly what made the "U:"/"D:" prefixes slide sideways.
+
+   font-weight: bold is also inherited from the Yaru theme (#panel and
+   #panel .panel-button both set it), and DejaVu Sans Mono has a real Bold
+   face, so this is genuinely bold - not synthesised. No monospace family on
+   a stock Ubuntu has a weight above Bold, so size is the only way to make
+   the weight read. The panel is 2.2em ~= 32px tall; two lines at 10px come
+   to ~24px, so there is room to go to 11px if you want it heavier still. */
 .netspeed-label {
     font-family: monospace;
-    font-size: 9px;
+    font-size: 10px;
     font-weight: bold;
-    min-width: 92px;
-    text-align: right;
 }
 
 .netspeed-detail {

@@ -68,6 +68,23 @@ function readCounters() {
     return out;
 }
 
+// The panel label must not change width, or the "U:"/"D:" prefixes shift
+// sideways every time the rate crosses a digit or a unit boundary. The font is
+// monospace, so a constant CHARACTER count is a constant pixel width.
+//
+// Both ends are pinned and only the middle moves:
+//
+//     U: 0.00  B/s        "U:" is at a fixed column, left
+//     U:  512  B/s        the unit is at a fixed column, right
+//     U: 7.59 kB/s        the number floats in the fixed field between them
+//     U: 1397 GB/s
+//
+// So the number is padStart(NUM_W) - right-aligned against the unit - and the
+// unit is padStart(UNIT_W) too, which right-aligns "B/s" under "kB/s" instead
+// of leaving it hanging a character short.
+const NUM_W = 4;    // '0.00', '99.9', ' 388', '1023'
+const UNIT_W = 4;   // ' B/s', 'kB/s', 'MB/s', 'GB/s'
+
 function formatRate(bytesPerSec) {
     const units = ['B/s', 'kB/s', 'MB/s', 'GB/s'];
     let v = Math.max(0, bytesPerSec);
@@ -77,7 +94,7 @@ function formatRate(bytesPerSec) {
         i++;
     }
     const digits = v >= 100 ? 0 : v >= 10 ? 1 : 2;
-    return `${v.toFixed(digits)} ${units[i]}`;
+    return `${v.toFixed(digits).padStart(NUM_W)} ${units[i].padStart(UNIT_W)}`;
 }
 
 function formatTotal(bytes) {
@@ -108,14 +125,14 @@ class NetSpeedIndicator extends PanelMenu.Button {
         });
 
         this._upLabel = new St.Label({
-            text: 'U: —',
+            text: `U: ${'—'.padStart(NUM_W).padEnd(NUM_W + 1 + UNIT_W)}`,
             style_class: 'netspeed-label',
-            x_align: Clutter.ActorAlign.END,
+            x_align: Clutter.ActorAlign.START,
         });
         this._downLabel = new St.Label({
-            text: 'D: —',
+            text: `D: ${'—'.padStart(NUM_W).padEnd(NUM_W + 1 + UNIT_W)}`,
             style_class: 'netspeed-label',
-            x_align: Clutter.ActorAlign.END,
+            x_align: Clutter.ActorAlign.START,
         });
 
         box.add_child(this._upLabel);
