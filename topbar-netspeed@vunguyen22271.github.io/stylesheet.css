@@ -1,0 +1,16 @@
+.netspeed-box {
+    padding: 0 4px;
+}
+
+.netspeed-label {
+    font-family: monospace;
+    font-size: 9px;
+    font-weight: bold;
+    min-width: 92px;
+    text-align: right;
+}
+
+.netspeed-detail {
+    font-family: monospace;
+    font-size: 12px;
+}

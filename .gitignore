@@ -1,0 +1,5 @@
+# Session build logs - local working notes, not part of the extension.
+docs/script-logs/
+
+# Packed extension produced by `gnome-extensions pack`
+*.shell-extension.zip

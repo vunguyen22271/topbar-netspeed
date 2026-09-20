@@ -1,0 +1,8 @@
+{
+  "uuid": "topbar-netspeed@vunguyen22271.github.io",
+  "name": "Topbar Net Speed",
+  "description": "Shows current upload and download speed in the top bar, next to the system indicators. Reads /proc/net/dev; no dependencies.",
+  "shell-version": ["45", "46", "47", "48", "49", "50", "51"],
+  "url": "https://github.com/vunguyen22271/topbar-netspeed",
+  "version": 1
+}
